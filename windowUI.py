@@ -16,7 +16,7 @@ class Ui_PlayerWindow(object):
         
         self.overlayLabel = QtWidgets.QLabel(self.centralwidget)
         self.overlayLabel.setGeometry(QtCore.QRect(0, 0, 300, 300))
-        self.overlayLabel.setStyleSheet('background-color: rgba(0, 0, 0, 100)')
+        self.overlayLabel.setStyleSheet('background-color: rgba(0, 0, 0, 90)')
         self.overlayLabel.setHidden(True)
         
         self.closeBtn = QtWidgets.QPushButton(self.centralwidget)

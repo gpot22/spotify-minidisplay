@@ -38,7 +38,7 @@ class BackgroundLoop(QtCore.QThread):
             if self.win_resized:
                 self.set_label_pixmap()
             if self.idle and not self.static_image:  # if idle, shuffle through images
-                self.ad = True
+                self.ad = False
                 self.idle_timer = (self.idle_timer+1)%IDLE_TIME
                 if self.idle_timer == 0:
                     self.set_static_image()
@@ -59,16 +59,17 @@ class BackgroundLoop(QtCore.QThread):
                         self.set_static_image()
             # playing song
             elif is_track(track_dict) and is_playing_track(track_dict):
-                self.idle = False
-                self.ad = False
+                
                 temp_id = get_track_id(track_dict)
-                if self.last_song_id != temp_id:  # song is different from last iteration
+                if self.last_song_id != temp_id or self.ad or self.idle:  # song is different from last iteration
                     self.last_song_id = temp_id
                     self.win.nameLabel.setText(get_track_name(track_dict))
                     self.win.artistLabel.setText(display_artist_names(get_artist_names(track_dict)))
                     if not self.static_image and not self.shuffle_image:
                         self.set_image(get_track_image(track_dict))
                         self.set_label_pixmap()
+                self.idle = False
+                self.ad = False
             # not playing song, not playing ad
             else:
                 self.idle = True
@@ -86,7 +87,7 @@ class BackgroundLoop(QtCore.QThread):
     def set_image_and_display(self, image) -> None:
         self.set_image(image)
         self.static_image = True
-        self.set_label_pixmap(True)
+        self.set_label_pixmap()
     
     def force(self) -> None:
         self.force_toggled = True
@@ -97,19 +98,17 @@ class BackgroundLoop(QtCore.QThread):
         self.image_bank = [i.name for i in scandir('images') if (not IMG_FLAG or not i.name.startswith('flag'))]
         if img in self.image_bank:
             self.image_bank.remove(img)
-        else:
-            print("not " + img)
+        # else:
+        #     print("not " + img)
         return 'images/' + img
-    def set_label_pixmap(self, force=False):
-        if not force and not self.win_resized:
-            return
+    def set_label_pixmap(self):
         self.win_resized = False
         pixmap = self.win.createImagePixmap(self.image) if self.image.startswith('https') else QtGui.QPixmap(self.image)
         self.win.imageLabel.setPixmap(self.win.resizePixmapToLabel(pixmap))
     
     def set_static_image(self):
         self.image = self.get_random_image()
-        self.set_label_pixmap(True)
+        self.set_label_pixmap()
         
         
         

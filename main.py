@@ -118,7 +118,7 @@ class MyPlayerWindow(Ui_PlayerWindow, QtWidgets.QMainWindow):
                     sp_dict = sp.currently_playing()
                     img = get_track_image(sp_dict)
                     self.bgLoop.set_image(img)
-                    self.bgLoop.set_label_pixmap(True)
+                    self.bgLoop.set_label_pixmap()
                     
                     # self.bgLoop.last_song_id = None  # make it reset to track image
             elif ev.button() == 2:  # shuffle images
@@ -130,15 +130,17 @@ class MyPlayerWindow(Ui_PlayerWindow, QtWidgets.QMainWindow):
                     sp_dict = sp.currently_playing()
                     img = get_track_image(sp_dict)
                     self.bgLoop.set_image(img)
-                    self.bgLoop.set_label_pixmap(True)
+                    self.bgLoop.set_label_pixmap()
     # Handle mouse in/out
     def enterEvent(self, ev):
         if not self.force_details:
             self.showDetails()
+        self.closeBtn.setHidden(False)
         
     def leaveEvent(self, ev):
         if not self.pressing and not self.force_details:
             self.hideDetails()
+        self.closeBtn.setHidden(True)
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     # - - - - - - - - - - - - - - - - Window Resizing - - - - - - - - - - - - - - - -
@@ -180,13 +182,13 @@ class MyPlayerWindow(Ui_PlayerWindow, QtWidgets.QMainWindow):
 
     def showDetails(self):
         self.overlayLabel.setHidden(False)
-        self.closeBtn.setHidden(False)
+        # self.closeBtn.setHidden(False)
         self.nameLabel.setHidden(False)
         self.artistLabel.setHidden(False)
     
     def hideDetails(self):
         self.overlayLabel.setHidden(True)
-        self.closeBtn.setHidden(True)
+        # self.closeBtn.setHidden(True)
         self.nameLabel.setHidden(True)
         self.artistLabel.setHidden(True)
     
