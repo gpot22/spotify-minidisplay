@@ -68,8 +68,12 @@ class MyPlayerWindow(Ui_PlayerWindow, QtWidgets.QMainWindow):
         
         # Hotkeys
         self.shortcut1 = QtWidgets.QShortcut(QtGui.QKeySequence('1'), self)
-        self.shortcut1.activated.connect(lambda: self.bgLoop.set_image_and_display('images/image1.png'))
-
+        self.shortcut1.activated.connect(lambda: self.bgLoop.set_image_and_display('images/milkmochacomfy.png'))
+        self.shortcut2 = QtWidgets.QShortcut(QtGui.QKeySequence('2'), self)
+        self.shortcut2.activated.connect(lambda: self.bgLoop.set_image_and_display('images/dinoxmas.png'))
+        self.shortcut9 = QtWidgets.QShortcut(QtGui.QKeySequence('9'), self)
+        self.shortcut9.activated.connect(lambda: self.bgLoop.set_image_and_display('images/snowybg.png'))
+        
         # keep details on screen?
         self.shortcut0 = QtWidgets.QShortcut(QtGui.QKeySequence('0'), self)
         self.shortcut0.activated.connect(lambda:self.toggleForceDetails())
