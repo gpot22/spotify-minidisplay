@@ -5,7 +5,7 @@ from os import scandir
 from utils import get_track_id, get_track_image, get_track_name, is_track, ad_is_playing, is_playing_track, get_artist_names, display_artist_names
 
 IDLE_TIME = 5
-IMG_FLAG = False
+IMG_FLAG = True
 
 class BackgroundLoop(QtCore.QThread):
     finished = QtCore.pyqtSignal()
@@ -87,6 +87,7 @@ class BackgroundLoop(QtCore.QThread):
     def set_image_and_display(self, image) -> None:
         self.set_image(image)
         self.static_image = True
+        self.shuffle_image = False
         self.set_label_pixmap()
     
     def force(self) -> None:
