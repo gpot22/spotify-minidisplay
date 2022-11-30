@@ -37,6 +37,8 @@ scope = 'user-read-recently-played user-read-playback-position ' \
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager, auth_manager=SpotifyOAuth(
     scope=scope, client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri))
 
+SCR_YLIM = 25  # can't drag higher than y=25 on mac :b
+
 class MyPlayerWindow(Ui_PlayerWindow, QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
