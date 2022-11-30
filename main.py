@@ -61,6 +61,8 @@ class MyPlayerWindow(Ui_PlayerWindow, QtWidgets.QMainWindow):
         # default image
         self.bgLoop.set_image('images/image0.png')
         pixmap = QtGui.QPixmap('images/image0.png')
+        self.bgLoop.set_image('images/milkmochacomfy.png')
+        pixmap = QtGui.QPixmap('images/milkmochacomfy.png')
         pixmap = self.resizePixmapToLabel(pixmap)
         self.imageLabel.setPixmap(pixmap)
         
@@ -106,6 +108,8 @@ class MyPlayerWindow(Ui_PlayerWindow, QtWidgets.QMainWindow):
         if self.pressing:
             self.end = self.mapToGlobal(ev.pos())
             self.movement = self.end-self.start
+            if self.movement.y() < 0 and self.geometry().y() < 26:  # mac doesnt let you go above y=25; fix bug related to this
+                return
             self.move(self.mapToGlobal(self.movement).x(), self.mapToGlobal(self.movement).y())
             self.start = self.end
 
