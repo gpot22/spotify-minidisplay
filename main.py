@@ -1,5 +1,5 @@
 import time
-from PyQt5 import QtWidgets, QtGui
+from PyQt5 import QtWidgets, QtGui, QtCore
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
 import urllib.request
@@ -9,8 +9,6 @@ from backgroundtask import BackgroundLoop
 from utils import get_track_image
 
 import json
-
-#TODO: Make hotkeying to specific images possible
 
 # client details
 with open('my_client.json', 'r') as f:
@@ -61,8 +59,6 @@ class MyPlayerWindow(Ui_PlayerWindow, QtWidgets.QMainWindow):
         self.setMinimumHeight(200)
         self.myAspectRatio = 1
         # default image
-        self.bgLoop.set_image('images/image0.png')
-        pixmap = QtGui.QPixmap('images/image0.png')
         self.bgLoop.set_image('images/milkmochacomfy.png')
         pixmap = QtGui.QPixmap('images/milkmochacomfy.png')
         pixmap = self.resizePixmapToLabel(pixmap)
@@ -102,16 +98,12 @@ class MyPlayerWindow(Ui_PlayerWindow, QtWidgets.QMainWindow):
         self.clickTimer = time.time()
 
     def mouseMoveEvent(self, ev):
-        # if ev.pos().y() < 0:
-        #     self.force_details = True
-        # elif self.hold_off:
-        #     self.start = self.mapToGlobal(ev.pos())
-        #     self.hold_off = False
         if self.pressing:
             self.end = self.mapToGlobal(ev.pos())
             self.movement = self.end-self.start
-            if self.movement.y() < 0 and self.geometry().y() < 26:  # mac doesnt let you go above y=25; fix bug related to this
-                return
+            if self.movement.y() < 0 and -5 < self.geometry().y() < 26 and -5 < self.end.y()<26:  # mac doesnt let you go above y=25; fix bug related to this
+                self.end = QtCore.QPoint(self.end.x(), self.start.y())
+                self.movement = QtCore.QPoint(self.movement.x(), 0)
             self.move(self.mapToGlobal(self.movement).x(), self.mapToGlobal(self.movement).y())
             self.start = self.end
 

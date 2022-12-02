@@ -29,7 +29,7 @@ class BackgroundLoop(QtCore.QThread):
         
         self.ad = False
         
-        self.image_bank = [i.name for i in scandir('images')]
+        self.image_bank = [i.name for i in scandir('images') if (not IMG_FLAG or not i.name.startswith('flag'))]
         
     def run(self):
         # timer = time.time()
